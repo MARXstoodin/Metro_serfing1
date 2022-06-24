@@ -16,6 +16,7 @@ public class Lv_movement : MonoBehaviour
     public GameObject Background;
     public Rigidbody Rb;
     public AudioSource Cn;
+    public ParticleSystem CoinDisaper;
     public AudioSource Jp;
     public Text Tx;
     int Score;
@@ -51,6 +52,7 @@ public class Lv_movement : MonoBehaviour
     {
         if (col.gameObject.tag == "Coin")
         {
+            CoinDisaper.Play();
             Destroy(col.gameObject);
             Cn.Play(0);
             Score = Score + 1;
