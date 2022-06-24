@@ -61,18 +61,18 @@ public class Lv_movement : MonoBehaviour
         }
         if (col.gameObject.tag == "Finish")
         {
-            Rnd = Random.Range(1, 3);
+            Rnd = Random.Range(0, 2);
             switch (Rnd)
             {
-                case 1:
+                case 0:
                     GameObject roadClone1 = Instantiate(Pre1, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
                     Destroy(roadClone1, 30f);
                     break;
-                case 2:
+                case 1:
                     GameObject roadClone2 = Instantiate(Pre2, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
                     Destroy(roadClone2, 30f);
                     break;
-                case 3:
+                case 2:
                     GameObject roadClone3 = Instantiate(Pre3, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
                     Destroy(roadClone3, 30f);
                     break;
