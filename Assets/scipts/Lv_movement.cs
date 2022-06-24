@@ -63,7 +63,7 @@ public class Lv_movement : MonoBehaviour
         }
         if (col.gameObject.tag == "Finish")
         {
-            Rnd = Random.Range(0, 2);
+            Rnd = Random.Range(0, 3);
             switch (Rnd)
             {
                 case 0:
