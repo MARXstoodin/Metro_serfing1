@@ -25,29 +25,69 @@ public class Lv_movement : MonoBehaviour
         transform.Translate(new Vector3(0, 0, 10) * Time.deltaTime);
         if (Input.GetKeyDown(KeyCode.A))
         {
+            jampLeft();
+            /*
             if (Derection > -1)
             {
-                Derection = Derection - 1;
+                
+                //Derection = Derection - 1;
             }
+            */
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
+            jampRight();
+            /*
             if (Derection < 1)
             {
-                Derection = Derection + 1;
+                
+                //Derection = Derection + 1;
             }
+            */
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            jampUp();
+            /*
             if ((transform.position.y<0.6)||(transform.position.y > 4.8)&&(transform.position.y < 4.9))
-            {
-                Jp.Play(0);
-                Rb.AddForce(0, 2000, 0);
+            {                
+                //Jp.Play(0);
+                //Rb.AddForce(0, 2000, 0);            
             }
+            */
         }
         transform.position = Vector3.Lerp(transform.position, new Vector3(Derection*3, transform.position.y, transform.position.z), Time.deltaTime*5);
         Tx.text = Score.ToString();
     }
+
+    public void jampLeft()
+    {
+        if  (Derection > -1)
+        {
+            Derection = Derection - 1;
+        }
+        
+    }
+
+    public void jampRight()
+    {
+        if (Derection < 1)
+        {
+            Derection = Derection + 1;
+        }
+        
+    }
+
+    public void jampUp()
+    {
+        if ((transform.position.y<0.6)||(transform.position.y > 4.8)&&(transform.position.y < 4.9))
+        {
+            Jp.Play(0);
+            Rb.AddForce(0, 2000, 0);            
+        }
+        
+    }
+
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Coin")
