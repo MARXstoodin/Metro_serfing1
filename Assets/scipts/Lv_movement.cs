@@ -20,13 +20,16 @@ public class Lv_movement : MonoBehaviour
     public AudioSource Jp;
     public Text Tx;
     public int Score;
+    int time = 10;
+    int BonusSpeed = 1;
+    bool invincibility = false;
     private void Start()
     {
         GlobalScore.GlobalCount = 0;
     }
     void Update()
     {
-        transform.Translate(new Vector3(0, 0, Score/20+10) * Time.deltaTime);
+        transform.Translate(new Vector3(0, 0, Score/20+10*BonusSpeed) * Time.deltaTime);
         /*if (Input.GetKeyDown(KeyCode.A))
         {
             jampLeft();
@@ -111,9 +114,28 @@ public class Lv_movement : MonoBehaviour
             Score = Score + 1;
             GlobalScore.GlobalCount = GlobalScore.GlobalCount + 1;
         }
+        if (col.gameObject.tag == "Bonus")
+        {
+            time = 10;
+            BonusSpeed = 10;
+            Destroy(col.gameObject);
+            invincibility = true;
+            while (time > 0)
+            {
+                time = time - 1;
+            }
+            if (time == 0)
+            {
+                invincibility = false;
+                BonusSpeed = 1;
+            }
+        }
         if (col.gameObject.tag == "Obstacle")
         {
-            SceneManager.LoadScene("menu");
+            if (invincibility == false)
+            {
+                SceneManager.LoadScene("menu");
+            }
         }
         if (col.gameObject.tag == "Finish")
         {
