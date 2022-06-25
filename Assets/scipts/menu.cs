@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class menu : MonoBehaviour
 {
+    public Text FinalScore;
     public Button enterButton;
     public Button exitButton;
     void Start()
     {
         exitButton.onClick.AddListener(exit);
         enterButton.onClick.AddListener(enter);
+        FinalScore.text = "Your score: " + GlobalScore.GlobalCount.ToString();
     }
     void exit()
     {
@@ -21,4 +23,5 @@ public class menu : MonoBehaviour
     {
         SceneManager.LoadScene("SampleScene");
     }
+   
 }
