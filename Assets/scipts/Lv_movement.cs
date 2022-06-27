@@ -10,17 +10,20 @@ public class Lv_movement : MonoBehaviour
 {
     int Rnd;
     int Derection = 0;
+    float _timeLeft = 3f;
+    bool _timerOn = false;
     public GameObject Pre1;
     public GameObject Pre2;
     public GameObject Pre3;
     public GameObject Background;
     public Rigidbody Rb;
     public AudioSource Cn;
+    public ParticleSystem BonusDisaper;
     public ParticleSystem CoinDisaper;
     public AudioSource Jp;
     public Text Tx;
     public int Score;
-    int time = 10;
+    float time = 3f;
     int BonusSpeed = 1;
     bool invincibility = false;
     private void Start()
@@ -30,6 +33,20 @@ public class Lv_movement : MonoBehaviour
     void Update()
     {
         transform.Translate(new Vector3(0, 0, Score/20+10*BonusSpeed) * Time.deltaTime);
+        if (_timerOn)
+        {
+            if (_timeLeft > 0)
+            {
+                _timeLeft -= Time.deltaTime;
+            }
+            else
+            {
+                _timeLeft = time;
+                _timerOn = false;
+                BonusSpeed = 1;
+                invincibility = false;
+            }
+        }
         /*if (Input.GetKeyDown(KeyCode.A))
         {
             jampLeft();
@@ -116,22 +133,15 @@ public class Lv_movement : MonoBehaviour
         }
         if (col.gameObject.tag == "Bonus")
         {
-            time = 10;
-            BonusSpeed = 10;
+            BonusDisaper.Play();
+            _timerOn = true;
+            BonusSpeed = 5;
             Destroy(col.gameObject);
-            invincibility = true;
-            while (time > 0)
-            {
-                time = time - 1;
-            }
-            if (time == 0)
-            {
-                invincibility = false;
-                BonusSpeed = 1;
-            }
+            invincibility = true;            
         }
         if (col.gameObject.tag == "Obstacle")
         {
+            Destroy(col.gameObject);
             if (invincibility == false)
             {
                 SceneManager.LoadScene("menu");
