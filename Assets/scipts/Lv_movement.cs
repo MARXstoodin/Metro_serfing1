@@ -9,21 +9,24 @@ using UnityEngine.UI;
 public class Lv_movement : MonoBehaviour
 {
     int Rnd;
+    int Health = 3;
     int Derection = 0;
     float _timeLeft = 3f;
     bool _timerOn = false;
     public GameObject Pre1;
     public GameObject Pre2;
     public GameObject Pre3;
+    public GameObject Heart1;
+    public GameObject Heart2;
     public GameObject Background;
     public Rigidbody Rb;
     public AudioSource Cn;
+    public ParticleSystem Stun;
     public ParticleSystem BonusDisaper;
     public ParticleSystem CoinDisaper;
     public AudioSource Jp;
     public Text Tx;
     public int Score;
-    float time = 3f;
     int BonusSpeed = 1;
     bool invincibility = false;
     private void Start()
@@ -33,53 +36,22 @@ public class Lv_movement : MonoBehaviour
     void Update()
     {
         transform.Translate(new Vector3(0, 0, Score/20+10*BonusSpeed) * Time.deltaTime);
-        if (_timerOn)
+        if (_timerOn == true)
         {
             if (_timeLeft > 0)
             {
-                _timeLeft -= Time.deltaTime;
+                _timeLeft = _timeLeft - Time.deltaTime;
             }
             else
             {
-                _timeLeft = time;
+                _timeLeft = 3f;
                 _timerOn = false;
                 BonusSpeed = 1;
                 invincibility = false;
+                Stun.Stop();
+                //print("ABOBA");
             }
         }
-        /*if (Input.GetKeyDown(KeyCode.A))
-        {
-            jampLeft();
-            /*
-            if (Derection > -1)
-            {
-                
-                //Derection = Derection - 1;
-            }
-            
-    }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            jampRight();
-            
-            if (Derection < 1)
-            {
-                
-                //Derection = Derection + 1;
-            }
-            
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            jampUp();
-            
-            if ((transform.position.y<0.6)||(transform.position.y > 4.8)&&(transform.position.y < 4.9))
-            {                
-                //Jp.Play(0);
-                //Rb.AddForce(0, 2000, 0);            
-            }
-            
-        }*/
         transform.position = Vector3.Lerp(transform.position, new Vector3(Derection*3, transform.position.y, transform.position.z), Time.deltaTime*5);
         Tx.text = Score.ToString();
     }
@@ -144,7 +116,23 @@ public class Lv_movement : MonoBehaviour
             Destroy(col.gameObject);
             if (invincibility == false)
             {
-                SceneManager.LoadScene("menu");
+                Stun.Play();
+                Health = Health - 1;
+                invincibility = true;
+                _timerOn = true;
+                //print(Health);
+            }
+            if (Health == 0)
+            {
+                SceneManager.LoadScene("Menu");
+            }
+            else if (Health == 1)
+            {
+                Destroy(Heart1);
+            }
+            else if (Health == 2)
+            {
+                Destroy(Heart2);
             }
         }
         if (col.gameObject.tag == "Finish")
