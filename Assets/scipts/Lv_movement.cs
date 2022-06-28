@@ -21,6 +21,7 @@ public class Lv_movement : MonoBehaviour
     public GameObject Background;
     public Rigidbody Rb;
     public AudioSource Cn;
+    public ParticleSystem Trail;
     public ParticleSystem Stun;
     public ParticleSystem BonusDisaper;
     public ParticleSystem CoinDisaper;
@@ -49,6 +50,7 @@ public class Lv_movement : MonoBehaviour
                 BonusSpeed = 1;
                 invincibility = false;
                 Stun.Stop();
+                Trail.Stop();
                 //BonusDisaper.Stop();
                 //print("ABOBA");
             }
@@ -61,6 +63,7 @@ public class Lv_movement : MonoBehaviour
     {
         if  (Derection > -1)
         {
+            Jp.Play(0);
             Derection = Derection - 1;
         }
         
@@ -70,6 +73,7 @@ public class Lv_movement : MonoBehaviour
     {
         if (Derection < 1)
         {
+            Jp.Play(0);
             Derection = Derection + 1;
         }
         
@@ -106,7 +110,9 @@ public class Lv_movement : MonoBehaviour
         }
         if (col.gameObject.tag == "Bonus")
         {
+            Rb.AddForce(0, 3800, 0);
             BonusDisaper.Play();
+            Trail.Play();
             _timerOn = true;
             BonusSpeed = 5;
             Destroy(col.gameObject);
