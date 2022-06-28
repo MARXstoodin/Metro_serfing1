@@ -49,6 +49,7 @@ public class Lv_movement : MonoBehaviour
                 BonusSpeed = 1;
                 invincibility = false;
                 Stun.Stop();
+                //BonusDisaper.Stop();
                 //print("ABOBA");
             }
         }
@@ -93,7 +94,7 @@ public class Lv_movement : MonoBehaviour
 
     }
 
-    void OnCollisionEnter(Collision col)
+    void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Coin")
         {
@@ -137,7 +138,7 @@ public class Lv_movement : MonoBehaviour
         }
         if (col.gameObject.tag == "Finish")
         {
-            Rnd = Random.Range(0, 3);
+            Rnd = Random.Range(0, 6);
             switch (Rnd)
             {
                 case 0:
@@ -151,6 +152,21 @@ public class Lv_movement : MonoBehaviour
                 case 2:
                     GameObject roadClone3 = Instantiate(Pre3, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
                     Destroy(roadClone3, 30f);
+                    break;
+                case 3:
+                    GameObject roadClone4 = Instantiate(Pre1, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    roadClone4.transform.localScale = new Vector3(-1, 1, 1);
+                    Destroy(roadClone4, 30f);
+                    break;
+                case 4:
+                    GameObject roadClone5 = Instantiate(Pre2, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    roadClone5.transform.localScale = new Vector3(-1, 1, 1);
+                    Destroy(roadClone5, 30f);
+                    break;
+                case 5:
+                    GameObject roadClone6 = Instantiate(Pre3, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    roadClone6.transform.localScale = new Vector3(-1, 1, 1);
+                    Destroy(roadClone6, 30f);
                     break;
             }
             GameObject background = Instantiate(Background, new Vector3(0, 2, transform.position.z + 110), transform.rotation);
