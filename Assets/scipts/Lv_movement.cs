@@ -110,7 +110,7 @@ public class Lv_movement : MonoBehaviour
         }
         if (col.gameObject.tag == "Bonus")
         {
-            Rb.AddForce(0, 3800, 0);
+            Rb.velocity=new Vector3(0, 15, 0);
             BonusDisaper.Play();
             Trail.Play();
             _timerOn = true;
