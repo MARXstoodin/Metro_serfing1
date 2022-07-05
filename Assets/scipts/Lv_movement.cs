@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class Lv_movement : MonoBehaviour
 {
+    public GameObject BuyLife;
     int Rnd;
     int Health = 3;
     int Derection = 0;
@@ -18,6 +19,7 @@ public class Lv_movement : MonoBehaviour
     public GameObject Pre3;
     public GameObject Heart1;
     public GameObject Heart2;
+    public GameObject Heart3;
     public GameObject Background;
     public Rigidbody Rb;
     public AudioSource Cn;
@@ -27,12 +29,15 @@ public class Lv_movement : MonoBehaviour
     public ParticleSystem CoinDisaper;
     public AudioSource Jp;
     public Text Tx;
-    public int Score;
+    public Text CostTx;
+    public static int Score;
+    public static int cost = 5;
     int BonusSpeed = 1;
     bool invincibility = false;
     private void Start()
     {
         GlobalScore.GlobalCount = 0;
+        BuyLife.SetActive(false);
     }
     void Update()
     {
@@ -97,7 +102,6 @@ public class Lv_movement : MonoBehaviour
         }
 
     }
-
     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Coin")
@@ -131,7 +135,19 @@ public class Lv_movement : MonoBehaviour
             }
             if (Health == 0)
             {
-                SceneManager.LoadScene("Menu");
+                cost *= 2;
+                Heart3.SetActive(false);
+                if (Score >= cost)
+                {
+                    BuyLife.SetActive(true);
+                    Time.timeScale = 0;
+                    Health = 1;
+                    CostTx.text = "For only "+cost.ToString();
+                }
+                else
+                {
+                    SceneManager.LoadScene("Menu");
+                }
             }
             else if (Health == 1)
             {

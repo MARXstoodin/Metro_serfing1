@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class CoinRot : MonoBehaviour
 {
+    private float update;
     void Update()
     {
-        transform.Rotate(0, 0, 1);
-        
+        update += Time.deltaTime;
+        if (update > 0.01f)
+        {
+            update = 0.0f;
+            transform.Rotate(0, 0, 1);
+        }
     }
 }
