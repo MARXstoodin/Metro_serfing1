@@ -12,8 +12,11 @@ public class Lv_movement : MonoBehaviour
     int Rnd;
     int Health = 3;
     int Derection = 0;
+    int PreDerection = 0;
     float _timeLeft = 3f;
     bool _timerOn = false;
+    float _timeLeft2 = 3.1f;
+    bool _timer2On = false;
     public GameObject Pre1;
     public GameObject Pre2;
     public GameObject Pre3;
@@ -29,19 +32,30 @@ public class Lv_movement : MonoBehaviour
     public ParticleSystem CoinDisaper;
     public AudioSource Jp;
     public Text Tx;
+    public Text distanceText;
     public Text CostTx;
     public static int Score;
-    public static int cost = 5;
+    public static int distance;
+    public static int cost = 100;
+    public AudioSource music;
     int BonusSpeed = 1;
+    public static bool coinbehave = false;
     bool invincibility = false;
+    public static bool ADwached = false;
     private void Start()
     {
         GlobalScore.GlobalCount = 0;
         BuyLife.SetActive(false);
+        Lv_movement.distance = 0;
     }
     void Update()
     {
-        transform.Translate(new Vector3(0, 0, Score/20+10*BonusSpeed) * Time.deltaTime);
+        if (ADwached == true & Health == 1)
+        {
+            music.UnPause();
+        }
+        distance = (int)this.transform.position.z/10;
+        transform.Translate(new Vector3(0, 0, distance/20 + 10 * BonusSpeed) * Time.deltaTime);
         if (_timerOn == true)
         {
             if (_timeLeft > 0)
@@ -52,16 +66,28 @@ public class Lv_movement : MonoBehaviour
             {
                 _timeLeft = 3f;
                 _timerOn = false;
-                BonusSpeed = 1;
                 invincibility = false;
                 Stun.Stop();
+            }
+        }
+        if (_timer2On == true)
+        {
+            if (_timeLeft2 > 0)
+            {
+                _timeLeft2 = _timeLeft2 - Time.deltaTime;
+            }
+            else
+            {
+                _timeLeft2 = 3.1f;
+                _timer2On = false;
+                BonusSpeed = 1;
+                invincibility = false;
                 Trail.Stop();
-                //BonusDisaper.Stop();
-                //print("ABOBA");
             }
         }
         transform.position = Vector3.Lerp(transform.position, new Vector3(Derection*3, transform.position.y, transform.position.z), Time.deltaTime*5);
-        Tx.text = Score.ToString();
+        distanceText.text = distance.ToString() + "m";
+        Tx.text = Score.ToString() + "$";
     }
 
     public void jampLeft()
@@ -70,20 +96,20 @@ public class Lv_movement : MonoBehaviour
         {
             Jp.Play(0);
             Derection = Derection - 1;
+            PreDerection = Derection + 1;
         }
         
     }
-
     public void jampRight()
     {
         if (Derection < 1)
         {
             Jp.Play(0);
             Derection = Derection + 1;
+            PreDerection = Derection -1;
         }
         
     }
-
     public void jampUp()
     {
         if ((transform.position.y<0.6)||(transform.position.y > 4.8)&&(transform.position.y < 4.9))
@@ -108,19 +134,22 @@ public class Lv_movement : MonoBehaviour
         {
             CoinDisaper.Play();
             Destroy(col.gameObject);
-            Cn.Play(0);
+            Cn.Play();
             Score = Score + 1;
-            GlobalScore.GlobalCount = GlobalScore.GlobalCount + 1;
         }
         if (col.gameObject.tag == "Bonus")
         {
             Rb.velocity=new Vector3(0, 15, 0);
             BonusDisaper.Play();
             Trail.Play();
-            _timerOn = true;
+            _timer2On = true;
             BonusSpeed = 5;
             Destroy(col.gameObject);
-            invincibility = true;            
+            invincibility = true;
+        }
+        if (col.gameObject.tag == "Platform")
+        {
+            Derection = PreDerection;
         }
         if (col.gameObject.tag == "Obstacle")
         {
@@ -131,23 +160,15 @@ public class Lv_movement : MonoBehaviour
                 Health = Health - 1;
                 invincibility = true;
                 _timerOn = true;
-                //print(Health);
             }
             if (Health == 0)
             {
-                cost *= 2;
                 Heart3.SetActive(false);
-                if (Score >= cost)
-                {
-                    BuyLife.SetActive(true);
-                    Time.timeScale = 0;
-                    Health = 1;
-                    CostTx.text = "For only "+cost.ToString();
-                }
-                else
-                {
-                    SceneManager.LoadScene("Menu");
-                }
+                BuyLife.SetActive(true);
+                Time.timeScale = 0;
+                Health = 1;
+                CostTx.text = "For only " + cost.ToString() + "$";
+                music.Pause();
             }
             else if (Health == 1)
             {
@@ -164,29 +185,29 @@ public class Lv_movement : MonoBehaviour
             switch (Rnd)
             {
                 case 0:
-                    GameObject roadClone1 = Instantiate(Pre1, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    GameObject roadClone1 = Instantiate(Pre1, new Vector3(0, 0, transform.position.z + 180), transform.rotation);
                     Destroy(roadClone1, 30f);
                     break;
                 case 1:
-                    GameObject roadClone2 = Instantiate(Pre2, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    GameObject roadClone2 = Instantiate(Pre2, new Vector3(0, 0, transform.position.z + 180), transform.rotation);
                     Destroy(roadClone2, 30f);
                     break;
                 case 2:
-                    GameObject roadClone3 = Instantiate(Pre3, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    GameObject roadClone3 = Instantiate(Pre3, new Vector3(0, 0, transform.position.z + 180), transform.rotation);
                     Destroy(roadClone3, 30f);
                     break;
                 case 3:
-                    GameObject roadClone4 = Instantiate(Pre1, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    GameObject roadClone4 = Instantiate(Pre1, new Vector3(0, 0, transform.position.z + 180), transform.rotation);
                     roadClone4.transform.localScale = new Vector3(-1, 1, 1);
                     Destroy(roadClone4, 30f);
                     break;
                 case 4:
-                    GameObject roadClone5 = Instantiate(Pre2, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    GameObject roadClone5 = Instantiate(Pre2, new Vector3(0, 0, transform.position.z + 180), transform.rotation);
                     roadClone5.transform.localScale = new Vector3(-1, 1, 1);
                     Destroy(roadClone5, 30f);
                     break;
                 case 5:
-                    GameObject roadClone6 = Instantiate(Pre3, new Vector3(0, 0, transform.position.z + 175), transform.rotation);
+                    GameObject roadClone6 = Instantiate(Pre3, new Vector3(0, 0, transform.position.z + 180), transform.rotation);
                     roadClone6.transform.localScale = new Vector3(-1, 1, 1);
                     Destroy(roadClone6, 30f);
                     break;

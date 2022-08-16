@@ -13,7 +13,7 @@ public class menu : MonoBehaviour
     {
         exitButton.onClick.AddListener(exit);
         enterButton.onClick.AddListener(enter);
-        FinalScore.text = "Your score: " + GlobalScore.GlobalCount.ToString();
+        FinalScore.text = "Your score: " + GlobalScore.GlobalCount.ToString() + 'm';
     }
     void exit()
     {

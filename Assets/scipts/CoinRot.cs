@@ -13,5 +13,9 @@ public class CoinRot : MonoBehaviour
             update = 0.0f;
             transform.Rotate(0, 0, 1);
         }
+        if (Lv_movement.coinbehave == true)
+        {
+
+        }
     }
 }
